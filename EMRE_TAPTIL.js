@@ -19,6 +19,8 @@
           </div>
           <div class="banner__wrapper">
             <div class="products"></div>
+            <button aria-label="prev" class="swiper-btn swiper-prev"></button>
+            <button aria-label="next" class="swiper-btn swiper-next"></button>
           </div>
         </div>
       </div>
@@ -74,11 +76,43 @@
         gap: 1rem;
         padding: 20px 50px;
       }
+      .swiper-prev {
+        background: url(/assets/svg/prev.svg) no-repeat;
+        background-color: #fef6eb;
+        background-position: 18px;
+        left: -65px;
+      }
+      .swiper-next, .swiper-prev {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 50%;
+        top: auto;
+      }
+      .swiper-next, .swiper-prev {
+        border: 1px solid #0000;
+      }
+      .swiper-next, .banner .swiper-prev {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 50%;
+        top: auto;
+      }
+        .swiper-next {
+        background: url(/assets/svg/next.svg) no-repeat;
+        background-color: #fef6eb;
+        background-position: 18px;
+        right: -65px;
+    }
       .product-card {
         margin-top: 20px;
         z-index: 1;
         display: block;
-        width: 100%;
+        flex: 0 0 230px;
+        scroll-snap-align: start;
         font-family: Poppins, "cursive";
         font-size: 12px;
         padding: 5px;
