@@ -3,6 +3,8 @@
     return console.log('wrong page');
   }
   const DATA_URL = 'https://gist.githubusercontent.com/sevindi/8bcbde9f02c1d4abe112809c974e1f49/raw/9bf93b58df623a9b16f1db721cd0a7a539296cf0/products.json';
+  const FAV_KEY = 'favorites';
+  let favorites = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
 
   const init = () => {
     buildHTML();
@@ -158,7 +160,12 @@
         color: #7d7d7d;
         font-size: 1.05rem;
       }
-
+      .product-card__new-price {
+        display: block;
+        width: 100%;
+        font-size: 2.2rem;
+        font-weight: 600;
+      }
       .card-heart {
         position: absolute;
         top: 6px;
@@ -168,8 +175,10 @@
         cursor: pointer;
       }
       .card-heart img { width: 100%; transition: filter .2s; }
-      .card-heart:hover img { filter: brightness(0) saturate(100%) hue-rotate(-10deg); }
-
+      .card-heart:hover img { filter: brightness(80%) saturate(100%) hue-rotate(-10deg); }
+      .card-heart img.filled { 
+        background-color: #f28e00;
+      }
       .card-stars {
         display: flex;
         align-items: center;
@@ -179,18 +188,24 @@
       }
       .card-stars .star { color: #ffd32c; }
       .card-stars .count { color: #888; font-size:11px }
-
       .add-btn {
-        display: block;
+        position: relative;
+        z-index: 2;
+        margin-top: 19px;
         width: 100%;
-        padding: 6px 0;
-        margin-top: 6px;
-        background: #f28e00;
+        padding: 15px 20px;
+        border-radius: 37.5px;
+        background-color: #fff7ec;
+        color: #f28e00;
+        font-family: Poppins, "cursive";
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-top: 25px;
+      }
+      .add-btn:hover {
+        background-color: #f28e00;
         color: #fff;
-        border: none;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
+        transition: background-color .3s, color .3s;
       }
       .add-btn:hover { opacity: .9; }
     `;
@@ -213,29 +228,28 @@
     const container = document.querySelector('.recommended .products');
 
     list.forEach((p, idx) => {
+      const isFav = favorites.includes(String(p.id));
       const card = document.createElement('a');
       card.className = 'product-card';
       card.href = p.url;
       card.target = '_blank';
       card.innerHTML = `
       <div class="card-heart">
-        <img src="assets/svg/default-favorite.svg" alt="Favourite">
+        <img src="assets/svg/default-favorite.svg"
+             class="${isFav ? 'filled' : ''}" alt="Fav">
       </div>
-
       <img src="${p.img}" alt="${p.name}">
-
       <h2>
         <b> ${p.brand} - </b>
         <span> ${p.name} </span>
       </h2>
       
-
       <div class="card-stars">
         ${'★★★★★'.split('').map(_ => '<span class="star">★</span>').join('')}
         <span class="count">(45)</span>
       </div>
 
-      <strong>${p.price.toString().replace('.', ',')} TL</strong>
+      <span class="product-card__new-price">${p.price.toString().replace('.', ',')} TL</span>
 
       <button class="add-btn">Sepete Ekle</button>
     `;
@@ -244,8 +258,35 @@
     });
   };
 
+  function attachHeartListener() {
+    document.querySelector('.recommended .products')
+      .addEventListener('click', (e) => {
+        const heart = e.target.closest('.card-heart');
+        if (!heart) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const id = String(heart.dataset.id);
+        const img = heart.querySelector('img');
+        const idx = favorites.indexOf(id);
+
+        if (idx === -1) {
+          favorites.push(id);
+          img.classList.add('filled');
+        } else {
+          favorites.splice(idx, 1);
+          img.classList.remove('filled');
+        }
+        localStorage.setItem(FAV_KEY, JSON.stringify(favorites));
+      });
+  }
+
   const setEvents = () => {
-    fetchProducts().then(renderProducts);
+    fetchProducts().then(list => {
+      renderProducts(list);
+      attachHeartListener();
+    });
   };
 
   init();
