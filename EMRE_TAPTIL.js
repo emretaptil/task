@@ -82,6 +82,10 @@
         background-position: 18px;
         left: -65px;
       }
+      .swiper-prev:hover, .swiper-next:hover {
+        border: 1px solid #f28e00;
+        background-color: #ffffff;
+      }
       .swiper-next, .swiper-prev {
         width: 50px;
         height: 50px;
@@ -93,7 +97,7 @@
       .swiper-next, .swiper-prev {
         border: 1px solid #0000;
       }
-      .swiper-next, .banner .swiper-prev {
+      .swiper-next, .swiper-prev {
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -101,12 +105,12 @@
         bottom: 50%;
         top: auto;
       }
-        .swiper-next {
+      .swiper-next {
         background: url(/assets/svg/next.svg) no-repeat;
         background-color: #fef6eb;
         background-position: 18px;
         right: -65px;
-    }
+      }
       .product-card {
         margin-top: 20px;
         z-index: 1;
@@ -125,20 +129,23 @@
         background-color: #fff;
       }
       .product-card:hover {
-        box-shadow: 0 0 0 0 #00000030, inset 0 0 0 3px #f28e00;
+        color: #7d7d7d;
+        cursor: pointer;
+        z-index: 2;
+        box-shadow: 0px 0px 0px 0 #00000030, inset 0 0 0 3px #f28e00;
       }
       .product-card img {
         width: 100%;
         border-radius: 4px;
         margin-bottom: 0.5rem;
       }
-      .product-card h3 {
-        color: #7d7d7d;
-        margin: 0.25rem 0;
-        font-size: 1rem;
-        font-weight: 500;
+      .product-card h2 {
+        font-size: 1.2rem;
+        height: 42px;
+        overflow: hidden;
+        margin-bottom: 10px;
       }
-      .product-card h3:hover {
+      .product-card h2:hover {
         color: #7d7d7d;
       }
       .product-card p {
@@ -151,6 +158,41 @@
         color: #7d7d7d;
         font-size: 1.05rem;
       }
+
+      .card-heart {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+      }
+      .card-heart img { width: 100%; transition: filter .2s; }
+      .card-heart:hover img { filter: brightness(0) saturate(100%) hue-rotate(-10deg); }
+
+      .card-stars {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-bottom: .4rem;
+        font-size: 12px;
+      }
+      .card-stars .star { color: #ffd32c; }
+      .card-stars .count { color: #888; font-size:11px }
+
+      .add-btn {
+        display: block;
+        width: 100%;
+        padding: 6px 0;
+        margin-top: 6px;
+        background: #f28e00;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .add-btn:hover { opacity: .9; }
     `;
     let style = document.querySelector('style.recommended-style');
     if (!style) {
@@ -169,17 +211,35 @@
 
   const renderProducts = (list) => {
     const container = document.querySelector('.recommended .products');
-    list.forEach((p) => {
+
+    list.forEach((p, idx) => {
       const card = document.createElement('a');
       card.className = 'product-card';
       card.href = p.url;
       card.target = '_blank';
       card.innerHTML = `
-        <img src="${p.img}" alt="${p.name}">
-        <h3>${p.brand}</h3>
-        <p>${p.name}</p>
-        <strong>${p.price.toString().replace('.', ',')} TL</strong>
-      `;
+      <div class="card-heart">
+        <img src="assets/svg/default-favorite.svg" alt="Favourite">
+      </div>
+
+      <img src="${p.img}" alt="${p.name}">
+
+      <h2>
+        <b> ${p.brand} - </b>
+        <span> ${p.name} </span>
+      </h2>
+      
+
+      <div class="card-stars">
+        ${'★★★★★'.split('').map(_ => '<span class="star">★</span>').join('')}
+        <span class="count">(45)</span>
+      </div>
+
+      <strong>${p.price.toString().replace('.', ',')} TL</strong>
+
+      <button class="add-btn">Sepete Ekle</button>
+    `;
+
       container.appendChild(card);
     });
   };
