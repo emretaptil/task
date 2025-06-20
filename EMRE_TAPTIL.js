@@ -17,7 +17,9 @@
           <div class="banner__titles">
             <h2 class="title-primary">Beğenebileceğinizi düşündüklerimiz</h2>
           </div>
-          <div class="products"></div>
+          <div class="banner__wrapper">
+            <div class="products"></div>
+          </div>
         </div>
       </div>
     `;
@@ -56,20 +58,37 @@
         color: #f28e00;
         margin: 0;
       }
+      .banner__wrapper {
+        box-shadow: 15px 15px 30px 0 #ebebeb80;
+        background-color: #fff;
+        border-bottom-left-radius: 35px;
+        border-bottom-right-radius: 35px;
+        position: relative;
+        border-radius: 40px;
+      }
       .products {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
         gap: 1rem;
+        padding: 20px 50px;
       }
       .product-card {
         margin-top: 20px;
-        border: 1px solid #eeeeee;
-        padding: 0.5rem;
-        width: 200px;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        font-family: Poppins, "cursive";
+        font-size: 12px;
+        padding: 5px;
+        color: #7d7d7d;
+        margin: 0 0 20px 3px;
+        border: 1px solid #ededed;
+        border-radius: 10px;
+        position: relative;
         text-decoration: none;
-        color: inherit;
-        background: #fff;
-        border-radius: 8px;
+        background-color: #fff;
       }
       .product-card:hover {
         box-shadow: 0 0 0 0 #00000030, inset 0 0 0 3px #f28e00;
