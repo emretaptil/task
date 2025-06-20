@@ -12,9 +12,13 @@
 
   const buildHTML = () => {
     const html = `
-      <div class="recommended">
-        <h2>Beğenebileceğinizi düşündüklerimiz</h2>
-        <div class="products"></div>
+      <div class="container">
+        <div class="recommended">
+          <div class="banner__titles">
+            <h2 class="title-primary">Beğenebileceğinizi düşündüklerimiz</h2>
+          </div>
+          <div class="products"></div>
+        </div>
       </div>
     `;
     document.querySelector('.Section1').innerHTML += html;
@@ -22,8 +26,35 @@
 
   const buildCSS = () => {
     const css = `
+      .container {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 1320px;
+      }
       .recommended {
         margin-top: 2rem;
+      }
+      .banner__titles {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #fef6eb;
+        padding: 25px 67px;
+        border-top-left-radius: 35px;
+        border-top-right-radius: 35px;
+        font-family: Quicksand-Bold;
+        font-weight: 700;
+      }
+      .title-primary {
+        font-family: Quicksand-Bold;
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1.11;
+        color: #f28e00;
+        margin: 0;
       }
       .products {
         display: flex;
@@ -94,7 +125,7 @@
         <img src="${p.img}" alt="${p.name}">
         <h3>${p.brand}</h3>
         <p>${p.name}</p>
-        <strong>${p.price} TL</strong>
+        <strong>${p.price.toString().replace('.', ',')} TL</strong>
       `;
       container.appendChild(card);
     });
